@@ -34,7 +34,7 @@ struct Contest: Codable, Hashable, Identifiable {
     let start: String
     let end: String
     let parsed_at: String?
-    let duration: String
+    let duration: Int
     let href: String
     let problems: String?
 }
