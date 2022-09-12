@@ -19,12 +19,13 @@ class ContestListViewModel: ObservableObject {
             URLQueryItem(name: "api_key", value: "2ca91832af218083a3e9ac413cdb2bbd4614e887"),
             URLQueryItem(name: "format", value: "json"),
             URLQueryItem(name: "upcomming", value: "true"),
-            // URLQueryItem(name: "start_time__during", value: "864000"),
-            URLQueryItem(name: "order_by", value: "start"),
-            URLQueryItem(name: "limit", value: "1000"),
-            URLQueryItem(name: "offset", value: "0"),
+//            URLQueryItem(name: "start_time__during", value: "864000"),
+            URLQueryItem(name: "order_by", value: "-start"),
+            URLQueryItem(name: "limit", value: "150"),
+//            URLQueryItem(name: "offset", value: "100"),
+            //            URLQueryItem(name: "offset", value: "0"),
             // URLQueryItem(name: "host", value: "codeforces.com"),
-            URLQueryItem(name: "format_time", value: "true")
+//            URLQueryItem(name: "format_time", value: "true")
         ]
 
         components = resultURL
