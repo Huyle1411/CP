@@ -6,6 +6,8 @@ struct ContestListView: View {
     @StateObject var viewmodel = ContestListViewModel()
     
     init() {
+        UITableView.appearance().tableFooterView = UIView()
+        UITableView.appearance().separatorStyle = .none
         //viewmodel.loadAPI()
     }
 
@@ -15,11 +17,23 @@ struct ContestListView: View {
         "codingcompetitions.withgoogle.com",
         "facebook.com"]
         
-    func checkFavoriteContest(str: String)->Bool {
-        print(str)
-        let result = favoriteContests.contains(where: str.contains)
-        print(result)
-        return result
+    func checkFavoriteContest(cur_contest: Contest)->Bool {
+        let result = favoriteContests.contains(where: cur_contest.host.contains)
+        if result == false {
+            return false
+        }
+        let dateFormatter = DateFormatter()
+//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        if let date = dateFormatter.date(from: cur_contest.start) {
+            let now = Date()
+            if now > date {
+                return false
+            }
+        }
+        
+        return true
     }
     
     @ViewBuilder
@@ -36,20 +50,21 @@ struct ContestListView: View {
                 .background(RoundedRectangle(cornerRadius: 25).stroke(Color.gray,lineWidth: 2))
             
         case .success:
-            NavigationView {
-                List(viewmodel.contests.filter { return checkFavoriteContest(str: $0.host)}) { item in
+            ZStack {
+                List(viewmodel.contests.filter { return checkFavoriteContest(cur_contest: $0)}) { item in
                 // List(viewmodel.contests) { item in
-                    ContestRow(contest: item)
-                }
-                .listStyle(GroupedListStyle())
-                .navigationBarTitle(Text("Contests"))
+                    ContestRow(contest: item).scaleEffect(x: 1, y: -1, anchor: .center)
+                }.scaleEffect(x: 1, y: -1, anchor: .center)
+
+//                .listStyle(GroupedListStyle())
+//                .navigationBarTitle(Text("Contests"))
             }
         case .failure(let error):
             Text(error)
                 .font(.title)
         }
     }
-    
+
     var body: some View {
         HStack {
             buildContent()
