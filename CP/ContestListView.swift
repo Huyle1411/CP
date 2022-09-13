@@ -10,20 +10,21 @@ struct ContestListView: View {
         UITableView.appearance().separatorStyle = .none
         //viewmodel.loadAPI()
     }
-
+    
     let favoriteContests = ["atcoder.jp",
-        "codeforces.com",
-        "codechef.com",
-        "codingcompetitions.withgoogle.com",
-        "facebook.com"]
-        
+                            "codeforces.com",
+                            "codechef.com",
+                            "codingcompetitions.withgoogle.com",
+                            "facebook.com",
+                            "leetcode.com"
+    ]
+    
     func checkFavoriteContest(cur_contest: Contest)->Bool {
         let result = favoriteContests.contains(where: cur_contest.host.contains)
         if result == false {
             return false
         }
         let dateFormatter = DateFormatter()
-//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         if let date = dateFormatter.date(from: cur_contest.start) {
@@ -47,28 +48,28 @@ struct ContestListView: View {
                         .font(.title2)
                 }
             }.frame(width: 120, height: 120, alignment: .center)
-                .background(RoundedRectangle(cornerRadius: 25).stroke(Color.gray,lineWidth: 2))
+            .background(RoundedRectangle(cornerRadius: 25).stroke(Color.gray,lineWidth: 2))
             
         case .success:
-            ZStack {
+            NavigationView {
                 List(viewmodel.contests.filter { return checkFavoriteContest(cur_contest: $0)}) { item in
-                // List(viewmodel.contests) { item in
-                    ContestRow(contest: item).scaleEffect(x: 1, y: -1, anchor: .center)
-                }.scaleEffect(x: 1, y: -1, anchor: .center)
-
-//                .listStyle(GroupedListStyle())
-//                .navigationBarTitle(Text("Contests"))
+                    ContestRow(contest: item)
+                        .scaleEffect(x: -1, y: 1, anchor: .center)
+                        .rotationEffect(.radians(.pi))
+                }
+                .scaleEffect(x: -1, y: 1, anchor: .center)
+                .rotationEffect(.radians(.pi))
+                .listStyle(GroupedListStyle())
             }
         case .failure(let error):
             Text(error)
                 .font(.title)
         }
     }
-
+    
     var body: some View {
         HStack {
             buildContent()
-            // stateContent
         }
         .onAppear {
             viewmodel.loadAPI()
