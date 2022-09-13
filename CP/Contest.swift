@@ -15,17 +15,17 @@ struct Meta: Codable {
 }
 
 struct Contest: Codable, Hashable, Identifiable {
-        // "id": 0,
-        // "resource": "",
-        // "resource_id": 0,
-        // "host": "",
-        // "event": "",
-        // "start": "datetime",
-        // "end": "datetime",
-        // "parsed_at": "datetime",
-        // "duration": "datetime",
-        // "href": "",
-        // "problems": ""
+    // "id": 0,
+    // "resource": "",
+    // "resource_id": 0,
+    // "host": "",
+    // "event": "",
+    // "start": "datetime",
+    // "end": "datetime",
+    // "parsed_at": "datetime",
+    // "duration": "datetime",
+    // "href": "",
+    // "problems": ""
     let id: Int64
     let resource: String
     let resource_id: Int
