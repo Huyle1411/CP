@@ -51,15 +51,21 @@ struct ContestListView: View {
             .background(RoundedRectangle(cornerRadius: 25).stroke(Color.gray,lineWidth: 2))
             
         case .success:
+            let bottomOffset = CGPoint(x: 0, y: .scrollView.contentSize.height - .scrollView.bounds.height + .scrollView.contentInset.bottom)
             NavigationView {
-                List(viewmodel.contests.filter { return checkFavoriteContest(cur_contest: $0)}) { item in
-                    ContestRow(contest: item)
-                        .scaleEffect(x: -1, y: 1, anchor: .center)
-                        .rotationEffect(.radians(.pi))
+                ScrollView {
+                    List(viewmodel.contests.filter { return checkFavoriteContest(cur_contest: $0)}) { item in
+                        NavigationLink(destination: DetailContestRow(contest: item)) {
+                            ContestRow(contest: item)
+                                .scaleEffect(x: -1, y: 1, anchor: .center)
+                                .rotationEffect(.radians(.pi))
+                        }
+                        
+                    }
+                    .scaleEffect(x: -1, y: 1, anchor: .center)
+                    .rotationEffect(.radians(.pi))
+                    .listStyle(GroupedListStyle())
                 }
-                .scaleEffect(x: -1, y: 1, anchor: .center)
-                .rotationEffect(.radians(.pi))
-                .listStyle(GroupedListStyle())
             }
         case .failure(let error):
             Text(error)
